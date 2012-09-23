@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView
+from django.utils.translation import ugettext_lazy as _
 
 from ralph.account.models import Perm
 from ralph.discovery.models import ReadOnlyDevice, Device, DeviceType
@@ -52,7 +53,7 @@ class SidebarRacks(object):
         def slug(sn):
             return sn.replace(' ', '-').lower()
         sidebar_items = [
-            MenuItem("Unknown", name='', fugue_icon='fugue-prohibition',
+            MenuItem(_("Unknown"), name='', fugue_icon='fugue-prohibition',
                      view_name='racks', view_args=['', ret['details'], ''])
         ]
         for dc in Device.objects.filter(
@@ -193,11 +194,11 @@ class RacksDeviceList(SidebarRacks, BaseMixin, BaseDeviceList):
         profile = self.request.user.get_profile()
         has_perm = profile.has_perm
         tab_items = ret['tab_items']
-        tab_items.append(MenuItem('Rack', fugue_icon='fugue-media-player-phone',
+        tab_items.append(MenuItem(_('Rack'), fugue_icon='fugue-media-player-phone',
                             href='../rack/?%s' % self.request.GET.urlencode()))
         if has_perm(Perm.create_device, self.rack.venture if
                     self.rack else None):
-            tab_items.append(MenuItem('Add Device',
+            tab_items.append(MenuItem(_('Add Device'),
                             fugue_icon='fugue-wooden-box--plus',
                             name='add_device',
                             href='../add_device/?%s' % (
@@ -261,7 +262,7 @@ class RacksRack(Racks, Base):
         ret = super(RacksRack, self).get_context_data(**kwargs)
         self.set_rack()
         tab_items = ret['tab_items']
-        tab_items.append(MenuItem('Rack', fugue_icon='fugue-media-player-phone',
+        tab_items.append(MenuItem(_('Rack'), fugue_icon='fugue-media-player-phone',
                             href='../rack/?%s' % self.request.GET.urlencode()))
         if self.rack.model.type == DeviceType.rack.id:
             slots_set = [
@@ -300,7 +301,7 @@ class DeviceCreateView(CreateView):
         model.dc = self.rack.dc
         model.rack = self.rack.rack
         model.save(priority=1, user=self.request.user)
-        messages.success(self.request, "Device created.")
+        messages.success(self.request, _("Device created."))
         return HttpResponseRedirect(self.request.path + '../info/%d' % model.id)
 
     def get(self, *args, **kwargs):
@@ -308,7 +309,7 @@ class DeviceCreateView(CreateView):
         has_perm = self.request.user.get_profile().has_perm
         if not has_perm(Perm.create_device, self.rack.venture):
             return HttpResponseForbidden(
-                    "You don't have permission to create devices here.")
+                    _("You don't have permission to create devices here."))
         return super(DeviceCreateView, self).get(*args, **kwargs)
 
     def post(self, *args, **kwargs):
@@ -316,7 +317,7 @@ class DeviceCreateView(CreateView):
         has_perm = self.request.user.get_profile().has_perm
         if not has_perm(Perm.create_device, self.rack.venture):
             return HttpResponseForbidden(
-                    "You don't have permission to create devices here.")
+                    _("You don't have permission to create devices here."))
         return super(DeviceCreateView, self).post(*args, **kwargs)
 
 
@@ -327,7 +328,7 @@ class RacksAddDevice(Racks, DeviceCreateView):
     def get_context_data(self, **kwargs):
         ret = super(RacksAddDevice, self).get_context_data(**kwargs)
         tab_items = ret['tab_items']
-        tab_items.append(MenuItem('Add Device', name='add_device',
+        tab_items.append(MenuItem(_('Add Device'), name='add_device',
                             fugue_icon='fugue-wooden-box--plus',
                             href='../add_device/?%s' % (
                                 self.request.GET.urlencode(),)

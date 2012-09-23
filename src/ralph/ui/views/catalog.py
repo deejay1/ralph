@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.utils.translation import ugettext_lazy as _
 
 from ralph.account.models import Perm
 from ralph.discovery.models import (DeviceType, ComponentType, DeviceModel,
@@ -77,7 +78,7 @@ class Catalog(Base):
     def get(self, *args, **kwargs):
         if not self.request.user.get_profile().has_perm(
                 Perm.edit_device_info_financial):
-            return HttpResponseForbidden('You have no permission to view catalog')
+            return HttpResponseForbidden(_('You have no permission to view catalog'))
         return super(Catalog, self).get(*args, **kwargs)
 
 
@@ -89,7 +90,7 @@ class Catalog(Base):
             model_type_id = None
         kind = self.kwargs.get('kind')
         sidebar_items = (
-            [MenuHeader('Components')] +
+            [MenuHeader(_('Components'))] +
             [MenuItem(
                     label=t.raw.title(),
                     name='component-%d' % t.id,
@@ -97,7 +98,7 @@ class Catalog(Base):
                     view_name='catalog',
                     view_args=('component', t.id),
                 ) for t in ComponentType(item=lambda t: t)] +
-            [MenuHeader('Devices')] +
+            [MenuHeader(_('Devices'))] +
             [MenuItem(
                         label=t.raw.title(),
                         name='device-%d' % t.id,
@@ -136,11 +137,11 @@ class CatalogDevice(Catalog):
         if not self.request.user.get_profile().has_perm(
                 Perm.edit_device_info_financial):
             raise HttpResponseForbidden(
-                    "You have no permission to edit catalog")
+                    _("You have no permission to edit catalog"))
         if 'move' in self.request.POST:
             items = self.request.POST.getlist('items')
             if not items:
-                messages.error(self.request, "Nothing to move.")
+                messages.error(self.request, _("Nothing to move."))
                 return HttpResponseRedirect(self.request.path)
             target_id = self.request.POST.get('target', '')
             if target_id == 'none':
@@ -156,13 +157,13 @@ class CatalogDevice(Catalog):
                 model.group = target
                 model.save()
             self.update_cached(target)
-            messages.success(self.request, "Items moved.")
+            messages.success(self.request, _("Items moved."))
             return HttpResponseRedirect(self.request.path)
         elif 'delete' in self.request.POST:
             try:
                 self.group_id = int(self.kwargs.get('group', ''))
             except ValueError:
-                messages.error(self.request, "No such group.")
+                messages.error(self.request, _("No such group."))
             else:
                 self.group = get_object_or_404(DeviceModelGroup,
                                                id=self.group_id)
@@ -171,7 +172,7 @@ class CatalogDevice(Catalog):
                 self.update_cached(self.group)
                 self.group.delete()
                 messages.warning(self.request,
-                                 "Group '%s' deleted." % self.group.name)
+                                 _("Group '%s' deleted.") % self.group.name)
             return HttpResponseRedirect(self.request.path+'..')
         else:
             try:
@@ -187,10 +188,10 @@ class CatalogDevice(Catalog):
             if self.form.is_valid():
                 self.form.save()
                 self.update_cached(self.group)
-                messages.success(self.request, "Changes saved.")
+                messages.success(self.request, _("Changes saved."))
                 return HttpResponseRedirect(self.request.path)
             else:
-                messages.error(self.request, "Correct the errors.")
+                messages.error(self.request, _("Correct the errors."))
         return self.get(*args, **kwargs)
 
     def get(self, *args, **kwargs):
@@ -256,11 +257,11 @@ class CatalogComponent(Catalog):
         if not self.request.user.get_profile().has_perm(
                 Perm.edit_device_info_financial):
             raise HttpResponseForbidden(
-                    "You have no permission to edit catalog")
+                    _("You have no permission to edit catalog"))
         if 'move' in self.request.POST:
             items = self.request.POST.getlist('items')
             if not items:
-                messages.error(self.request, "Nothing to move.")
+                messages.error(self.request, _("Nothing to move."))
                 return HttpResponseRedirect(self.request.path)
             target_id = self.request.POST.get('target', '')
             if target_id == 'none':
@@ -276,13 +277,13 @@ class CatalogComponent(Catalog):
                 model.group = target
                 model.save()
             self.update_cached(target)
-            messages.success(self.request, "Items moved.")
+            messages.success(self.request, _("Items moved."))
             return HttpResponseRedirect(self.request.path)
         elif 'delete' in self.request.POST:
             try:
                 self.group_id = int(self.kwargs.get('group', ''))
             except ValueError:
-                messages.error(self.request, "No such group.")
+                messages.error(self.request, _("No such group."))
             else:
                 self.group = get_object_or_404(ComponentModelGroup,
                                                id=self.group_id)
@@ -291,7 +292,7 @@ class CatalogComponent(Catalog):
                 self.update_cached(self.group)
                 self.group.delete()
                 messages.warning(self.request,
-                                 "Group '%s' deleted." % self.group.name)
+                                 _("Group '%s' deleted.") % self.group.name)
             return HttpResponseRedirect(self.request.path+'..')
         else:
             try:
@@ -307,10 +308,10 @@ class CatalogComponent(Catalog):
             if self.form.is_valid():
                 self.form.save()
                 self.update_cached(self.group)
-                messages.success(self.request, "Changes saved.")
+                messages.success(self.request, _("Changes saved."))
                 return HttpResponseRedirect(self.request.path)
             else:
-                messages.error(self.request, "Correct the errors.")
+                messages.error(self.request, _("Correct the errors."))
         return self.get(*args, **kwargs)
 
 

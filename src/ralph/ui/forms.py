@@ -91,17 +91,20 @@ class NetworksFilterForm(forms.Form):
 
 class SearchForm(forms.Form):
     name = forms.CharField(required=False,
-            widget=forms.TextInput(attrs={'class':'span2'}))
+            widget=forms.TextInput(attrs={'class':'span2'}),
+            label=_("Name"))
     address = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}),
             label=_("Address or network"))
     remarks = forms.CharField(required=False,
-            widget=forms.TextInput(attrs={'class':'span2'}))
+            widget=forms.TextInput(attrs={'class':'span2'}),
+            label=_("Remarks"))
     role = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}),
             label=_("Venture or role"))
     model = forms.CharField(required=False,
-            widget=forms.TextInput(attrs={'class':'span2'}))
+            widget=forms.TextInput(attrs={'class':'span2'}),
+            label=_("Model"))
     component = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}),
             label=_("Component or software"))
@@ -109,12 +112,14 @@ class SearchForm(forms.Form):
             widget=forms.TextInput(attrs={'class':'span2'}),
             label=_("Serial number or MAC"))
     barcode = forms.CharField(required=False,
-            widget=forms.TextInput(attrs={'class':'span2'}))
+            widget=forms.TextInput(attrs={'class':'span2'}),
+            label=_("Barcode"))
     position = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}),
             label=_("Datacenter, rack or position"))
     history = forms.CharField(required=False,
-            widget=forms.TextInput(attrs={'class':'span2'}))
+            widget=forms.TextInput(attrs={'class':'span2'}),
+            label=_("History"))
     device_type = forms.MultipleChoiceField(required=False,
             widget=forms.SelectMultiple(attrs={'class': 'span2'}),
             choices=DeviceType(item=lambda e: (e.id, e.raw)),
