@@ -48,7 +48,7 @@ def get_ip_hostname_sets(ip):
     return ip_set, hostname_set
 
 @plugin.register(chain='discovery', requires=['ping'], priority=200)
-def cheff(**kwargs):
+def chef_disc(**kwargs):
     ip = str(kwargs['ip'])
     chef_api = chef.ChefAPI(API_URL, API_KEY, API_USER)
     search = chef.Search('node', q="ipaddress:%s"%ip)
@@ -64,18 +64,15 @@ def cheff(**kwargs):
     return True, message, kwargs
 
 def is_host_virtual(node_data):
-    is_virtual=False
-    if node_data['automatic']['virtualization']['role'] == 'guest':
-        is_virtual = True
-    return is_virtual
+    return node_data['automatic']['virtualization']['role'] == 'guest'
         
 
 def parse_attributes(node_data):
-    sn = node_data['automatic']['dmi']['base_board']['serial_number']
+    sn = node_data['automatic']['dmi']['system']['serial_number']
     if sn in SERIAL_BLACKLIST:
         sn = None
-    prod_name = node_data['automatic']['dmi']['base_board']['product_name']
-    manufacturer = node_data['automatic']['dmi']['base_board']['manufacturer']
+    prod_name = node_data['automatic']['dmi']['system']['product_name']
+    manufacturer = node_data['automatic']['dmi']['system']['manufacturer']
     model_name = "{} {}".format(manufacturer, prod_name)
     dev_name = model_name
     if DeviceType.blade_server.matches(model_name):
@@ -85,7 +82,9 @@ def parse_attributes(node_data):
     ip_addresses, ethernets = handle_data_ethernets(node_data)
     dev = Device.create(sn=sn, model_name=model_name, model_type=model_type,
                         ethernets=ethernets, priority=SAVE_PRIORITY)
-    
+
+    handle_data_os(dev, node_data)
+
     return dev, dev_name
 
 def handle_data_ethernets(node_data):
@@ -103,4 +102,30 @@ def handle_data_ethernets(node_data):
                 mac = address.format(interface)
                 label = 'Ethernet {}'.format(interface)
                 ethernets.append(Eth(label, mac, speed=None))
-    return ip_addresses, ethernets           
+    return ip_addresses, ethernets
+
+def handle_data_os(dev, node_data):
+    try:
+        os_name = node_data['automatic']['lsb']['description']
+        family = node_data['automatic']['kernel']['name']
+        os_version = node_data['automatic']['kernel']['release']
+    except KeyError:
+       return
+    os = OperatingSystem.create(dev=dev, os_name=os_name, version=os_version,
+                                family=family)
+    memory_size = None
+    try:
+        memory_size, unit = re.findall('(\d+)(\w+)', node_data['automatic']['memory']['total'].lower())[0]
+        if unit == 'tb':
+            memory_size = int(float(memory_size) * 1024 * 1024)
+        elif unit == 'gb':
+            memory_size = int(float(memory_size) * 1024)
+        elif unit == 'mb' or unit == 'mib':
+            memory_size = int(memory_size)
+        elif unit == 'kb':
+            memory_size = int(int(memory_size) / 1024)
+    except (KeyError, ValueError):
+        pass
+
+    os.memory = memory_size
+    os.save(priority=SAVE_PRIORITY)
