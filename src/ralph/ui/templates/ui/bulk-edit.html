@@ -2,6 +2,7 @@
 
 {% load url from future %}
 {% load icons %}
+{% load i18n %}
 
 {% block sidebar %}
 <div class="well">
@@ -62,7 +63,7 @@
         class="btn btn-primary"
         type="submit"
         name="save">
-            {% icon 'fugue-tick' %}&nbsp;Save
+            {% icon 'fugue-tick' %}&nbsp;{% trans "Save" %}
     </button>
     {% for e in form.save_comment.errors %}
         <div class="help-block error-text">{{ e }}</div>

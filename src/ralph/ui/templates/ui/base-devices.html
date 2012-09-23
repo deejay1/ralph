@@ -4,6 +4,8 @@
 {% load formats %}
 {% load bob %}
 
+{% load i18n %}
+
 {% block sidebar %}
 {% if sidebar_items %}    
 {% sidebar_menu sidebar_items sidebar_selected %}
@@ -27,11 +29,11 @@
 {% endfor %}
 {% if searchform_filter %}
 <button type="submit" class="btn btn-primary">
-    {% icon 'fugue-funnel' %}&nbsp;Filter
+    {% icon 'fugue-funnel' %}&nbsp;{% trans "Filter" %}
 </button>
 {% else %}
 <button type="submit" class="btn btn-primary">
-    {% icon 'fugue-magnifier' %}&nbsp;Search
+    {% icon 'fugue-magnifier' %}&nbsp;{% trans "Search" %}
 </button>
 {% endif %}
 </form>

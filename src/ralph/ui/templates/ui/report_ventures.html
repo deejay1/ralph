@@ -3,6 +3,7 @@
 {% load icons %}
 {% load formats %}
 {% load bob %}
+{% load i18n %}
 
 {% block contentarea %}
 
@@ -19,10 +20,10 @@
         </div>
     {% endfor %}
     <button type="submit" class="btn">{% spaceless %}
-        {% icon 'fugue-calendar-search-result' %}&nbsp;Update
+        {% icon 'fugue-calendar-search-result' %}&nbsp;{% trans "Update" %}
         {% endspaceless %}</button>
     <button class="btn pull-right" name="export" value="csv">{% spaceless %}
-        {% icon 'fugue-document-excel-csv' %}&nbsp;Export to CSV
+        {% icon 'fugue-document-excel-csv' %}&nbsp;{% trans "Export to CSV" %}
     {% endspaceless %}</button>
 </div>
 </form>
@@ -31,13 +32,13 @@
 <div class="span12">
     <table class="table table-striped table-bordered table-condensed">
         <tr>
-            <th>Venture</th>
-            <th>Department</th>
-            <th>Default margin</th>
-            <th>Device count</th>
-            <th>Total cost</th>
+            <th>{% trans "Venture" %}</th>
+            <th>{% trans "Department" %}</th>
+            <th>{% trans "Default margin" %}</th>
+            <th>{% trans "Device count" %}</th>
+            <th>{% trans "Total cost" %}</th>
             {% if profile.is_staff %}
-            <th>Actions</th>
+            <th>{% trans "Actions" %}</th>
             {% endif %}
         </tr>
         {% for venture in ventures %}
@@ -62,7 +63,7 @@
             {% if profile.is_staff %}
             <td>{% spaceless %}
             <a href="/admin/business/venture/{{ venture.id }}">
-                {% icon 'fugue-toolbox--pencil' %}&nbsp;Edit
+                {% icon 'fugue-toolbox--pencil' %}&nbsp;{% trans "Edit" %}
             </a>
             {% endspaceless %}</td>
             {% endif %}

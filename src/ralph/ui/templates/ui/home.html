@@ -2,6 +2,7 @@
 {% load url from future %}
 {% load icons %}
 {% load query %}
+{% load i18n %}
 
 {% block sidebar %}
 {% endblock %}
@@ -9,10 +10,10 @@
 {% block contentarea %}
     <form class="form form-inline dashboard-form" action="{% url 'search' 'info' '' %}">
         <div class="control-group input-append">
-            <p>Where do you want to go today?</p>
+            <p>{% trans "Where do you want to go today?" %}</p>
             <input type="text" class="span6" name="name"
              ><button class="btn btn-primary">
-                {% icon 'fugue-magnifier' %} Search
+                {% icon 'fugue-magnifier' %} {% trans "Search" %}
             </button>
         </div>
     </form>

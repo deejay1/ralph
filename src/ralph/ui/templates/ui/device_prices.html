@@ -2,6 +2,7 @@
 {% load url from future %}
 {% load icons %}
 {% load formats %}
+{% load i18n %}
 
 {% block content %}
 <div class="row-fluid">
@@ -15,9 +16,9 @@
 <table class="table table-striped table-bordered details-prices-components">
     <thead><tr>
             <th width="16"></th>
-        <th>Label</th>
-        <th>Model</th>
-        <th>Price</th>
+        <th>{% trans "Label" %}</th>
+        <th>{% trans "Model" %}</th>
+        <th>{% trans "Price" %}</th>
     </tr></thead>
     <tbody>
         {% for item in components %}

@@ -1,6 +1,7 @@
 {% extends "ui/base-devices.html" %}
 {% load url from future %}
 {% load icons %}
+{% load i18n %}
 
 {% block content %}
 <div class="row-fluid">
@@ -9,11 +10,11 @@
 <table class="table table-striped table-bordered details-addresses">
     <thead><tr>
         <th width="16"></th>
-        <th>Hostname</th>
-        <th>Address</th>
-        <th>Last Ping</th>
+        <th>{% trans "Hostname" %}</th>
+        <th>{% trans "Address" %}</th>
+        <th>{% trans "Last Ping" %}</th>
         {% if user.is_staff %}
-        <th>Action</th>
+        <th>{% trans "Action" %}</th>
         {% endif %}
     </tr></thead>
     <tbody>
@@ -26,10 +27,10 @@
             {% if user.is_staff %}
             <td>
                 <a href="/admin/discovery/ipaddress/{{ item.id }}/">
-                {% icon 'fugue-toolbox--pencil' %}&nbsp;Edit
+                {% icon 'fugue-toolbox--pencil' %}&nbsp;{% trans "Edit" %}
                 </a>
                 <a href="/admin/discovery/ipaddress/{{ item.id }}/delete">
-                {% icon 'fugue-skull' %}&nbsp;Delete
+                {% icon 'fugue-skull' %}&nbsp;{% trans "Delete" %}
                 </a>
             </td>
             {% endif %}
@@ -41,13 +42,13 @@
 <table class="table table-striped table-bordered details-dns">
     <thead><tr>
         <th width="16"></th>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Content</th>
-        <th>TTL</th>
-        <th>Priority</th>
+        <th>{% trans "Name" %}</th>
+        <th>{% trans "Type" %}</th>
+        <th>{% trans "Content" %}</th>
+        <th>{% trans "TTL" %}</th>
+        <th>{% trans "Priority" %}</th>
         {% if user.is_staff %}
-        <th>Action</th>
+        <th>{% trans "Action" %}</th>
         {% endif %}
     </tr></thead>
     <tbody>
@@ -61,7 +62,7 @@
             <td>{{ item.prio|default:'' }}</td>
             {% if user.is_staff %}
             <td><a href="/admin/powerdns/record/{{ item.id }}/">
-                {% icon 'fugue-toolbox--pencil' %}&nbsp;Edit
+                {% icon 'fugue-toolbox--pencil' %}&nbsp;{% trans "Edit" %}
             </a></td>
             {% endif %}
         </tr>
@@ -72,10 +73,10 @@
 <table class="table table-striped table-bordered details-dhcp">
     <thead><tr>
         <th width="16"></th>
-        <th>IP Address</th>
-        <th>MAC Address</th>
+        <th>{% trans "IP Address" %}</th>
+        <th>{% trans "MAC Address" %}</th>
         {% if user.is_staff %}
-        <th>Action</th>
+        <th>{% trans "Action" %}</th>
         {% endif %}
     </tr></thead>
     <tbody>
@@ -86,7 +87,7 @@
             <td>{{ item.mac }}</td>
             {% if user.is_staff %}
             <td><a href="/admin/dnsedit/dhcpentry/{{ item.id }}/">
-                {% icon 'fugue-toolbox--pencil' %}&nbsp;Edit
+                {% icon 'fugue-toolbox--pencil' %}&nbsp;{% trans "Edit" %}
             </a></td>
             {% endif %}
         </tr>
@@ -100,9 +101,9 @@
 <table class="table table-striped table-bordered details-balancers">
     <thead><tr>
             <th width="16"></th>
-        <th>Load Balancer</th>
-        <th>Pool</th>
-        <th>Port</th>
+        <th>{% trans "Load Balancer" %}</th>
+        <th>{% trans "Pool" %}</th>
+        <th>{% trans "Port" %}</th>
     </tr></thead>
     <tbody>
         {% for item in balancers %}

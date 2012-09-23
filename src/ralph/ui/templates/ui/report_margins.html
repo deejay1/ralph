@@ -3,6 +3,7 @@
 {% load icons %}
 {% load formats %}
 {% load bob %}
+{% load i18n %}
 
 {% block contentarea %}
 </div>
@@ -23,17 +24,17 @@
                 {% endif %}
             {% endfor %}
             {% spaceless %}<button class="btn pull-right">
-                {% icon 'fugue-calculator' %}&nbsp;Calculate
+                {% icon 'fugue-calculator' %}&nbsp;{% trans "Calculate" %}
             </button>{% endspaceless %}
         </div>
         <table class="table table-bordered table-striped table-condensed">
             <tr>
-                <th>Margin kind name</th>
-                <th>Device count</th>
-                <th>Current margin</th>
-                <th>Current cost</th>
-                <th width="3em">Simulated margin</th>
-                <th>Simulated cost</th>
+                <th>{% trans "Margin kind name" %}</th>
+                <th>{% trans "Device count" %}</th>
+                <th>{% trans "Current margin" %}</th>
+                <th>{% trans "Current cost" %}</th>
+                <th width="3em">{% trans "Simulated margin" %}</th>
+                <th>{% trans "Simulated cost" %}</th>
             </tr>
             {% for f, mk in zip_margin_kinds_form %}
                 <tr>
@@ -53,7 +54,7 @@
                 </tr>
             {% endfor %}
             <tr>
-                <th>Total</th>
+                <th>{% trans "Total" %}</th>
                 <td class="count">{{ total_count }}</td>
                 <td></td>
                 <td class="currency">{{ total_cost|currency }}</td>

@@ -2,6 +2,7 @@
 {% load url from future %}
 {% load icons %}
 {% load bob %}
+{% load i18n %}
 
 {% block contentarea %}
 <form 
@@ -16,32 +17,32 @@
         <th width="16"><div class="dropdown">
             <a href="#" data-toggle="dropdown" class="dropdown-toggle">{% icon 'fugue-ui-check-boxes-series' %}</a>
             <ul class="dropdown-menu">
-                <li><a href="#" class="select-all">{% icon 'fugue-ui-check-box' %}&nbsp;Select all on this page</a></li>
-                <li><a href="#" class="select-toggle">{% icon 'fugue-ui-check-box-mix' %}&nbsp;Reverse selection</a></li>
-                <li><a href="#" class="select-none">{% icon 'fugue-ui-check-box-uncheck' %}&nbsp;Deselect all</a></li>
+                <li><a href="#" class="select-all">{% icon 'fugue-ui-check-box' %}&nbsp;{% trans "Select all on this page" %}</a></li>
+                <li><a href="#" class="select-toggle">{% icon 'fugue-ui-check-box-mix' %}&nbsp;{% trans "Reverse selection" %}</a></li>
+                <li><a href="#" class="select-none">{% icon 'fugue-ui-check-box-uncheck' %}&nbsp;{% trans "Deselect all" %}</a></li>
             </ul>
         </div></th>
         {% endif %}
-        {% include 'ui/column-header.html' with label='Name' name='name' always=1 %}
-        {% include 'ui/column-header.html' with label='Venture/Role' name='venture' %}
-        {% include 'ui/column-header.html' with label='Model' name='model' %}
-        {% include 'ui/column-header.html' with label='Margin' name='margin' type='quantity' %}
-        {% include 'ui/column-header.html' with label='Deprecation' name='deprecation' type='quantity' %}
-        {% include 'ui/column-header.html' with label='Price' name='price' type='price' %}
-        {% include 'ui/column-header.html' with label='Monthly Cost' name='cost' type='price' %}
-        {% include 'ui/column-header.html' with label='Barcode' name='barcode' %}
-        {% include 'ui/column-header.html' with label='Serial number' name='serial_number'%}
-        {% include 'ui/column-header.html' with label='Position' name='position' type='number' %}
-        {% include 'ui/column-header.html' with label='IP Addresses' name='ips' %}
-        {% include 'ui/column-header.html' with label='Management' name='management' %}
-        {% include 'ui/column-header.html' with label='Created' name='created' type='date' %}
-        {% include 'ui/column-header.html' with label='Last Seen' name='lastseen' type='date' %}
-        {% include 'ui/column-header.html' with label='Last Ping' name='lastping' type='date' %}
-        {% include 'ui/column-header.html' with label='Reports' name='reports' type='quantity' %}
-        {% include 'ui/column-header.html' with label='Remarks' name='remarks' %}
-        {% include 'ui/column-header.html' with label='Purchase Date' name='purchase' type='date' %}
-        {% include 'ui/column-header.html' with label='Warranty Expiration' name='warranty' type='date' %}
-        {% include 'ui/column-header.html' with label='Support Expiration' name='support' type='date' %}
+        {% include 'ui/column-header.html' with label=_("Name") name='name' always=1 %}
+        {% include 'ui/column-header.html' with label=_("Venture/Role") name='venture' %}
+        {% include 'ui/column-header.html' with label=_("Model") name='model' %}
+        {% include 'ui/column-header.html' with label=_("Margin") name='margin' type='quantity' %}
+        {% include 'ui/column-header.html' with label=_("Deprecation") name='deprecation' type='quantity' %}
+        {% include 'ui/column-header.html' with label=_("Price") name='price' type='price' %}
+        {% include 'ui/column-header.html' with label=_("Monthly Cost") name='cost' type='price' %}
+        {% include 'ui/column-header.html' with label=_("Barcode") name='barcode' %}
+        {% include 'ui/column-header.html' with label=_("Serial number") name='serial_number'%}
+        {% include 'ui/column-header.html' with label=_("Position") name='position' type='number' %}
+        {% include 'ui/column-header.html' with label=_("IP Addresses") name='ips' %}
+        {% include 'ui/column-header.html' with label=_("Management") name='management' %}
+        {% include 'ui/column-header.html' with label=_("Created") name='created' type='date' %}
+        {% include 'ui/column-header.html' with label=_("Last Seen") name='lastseen' type='date' %}
+        {% include 'ui/column-header.html' with label=_("Last Ping") name='lastping' type='date' %}
+        {% include 'ui/column-header.html' with label=_("Reports") name='reports' type='quantity' %}
+        {% include 'ui/column-header.html' with label=_("Remarks") name='remarks' %}
+        {% include 'ui/column-header.html' with label=_("Purchase Date") name='purchase' type='date' %}
+        {% include 'ui/column-header.html' with label=_("Warranty Expiration") name='warranty' type='date' %}
+        {% include 'ui/column-header.html' with label=_("Support Expiration") name='support' type='date' %}
         {% endspaceless %}
     </tr></thead>
     <tbody>
@@ -62,7 +63,7 @@
     {% csrf_token %}
     <div class="controls">
         <button type="submit" class="btn" name="bulk">
-            {% icon 'fugue-pencil-field' %} Bulk edit
+            {% icon 'fugue-pencil-field' %} {% trans "Bulk edit" %}
         </button>
     </div>
 </div>

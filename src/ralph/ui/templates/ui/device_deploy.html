@@ -2,6 +2,7 @@
 
 {% load url from future %}
 {% load icons %}
+{% load i18n %}
 
 {% block contentarea %}
 <form class="form form-horizontal device-deploy-form" method="POST">
@@ -27,7 +28,7 @@
 <div class="form-actions">
     <div class="control-group" style="white-space:nowrap">
         <button class="btn btn-primary" type="submit" name="deploy">
-                {% icon 'fugue-wand-hat' %}&nbsp;Deploy
+                {% icon 'fugue-wand-hat' %}&nbsp;{% trans "Deploy" %}
         </button>
     </div>
 </div>

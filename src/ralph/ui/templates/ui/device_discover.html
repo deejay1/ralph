@@ -1,7 +1,7 @@
 {% extends "ui/base-devices.html" %}
 {% load url from future %}
 {% load icons %}
-
+{% load i18n %}
 
 {% block content %}
 <form method="POST" class="form form-inline" id="disco-form" action="/ui/discover/">
@@ -15,7 +15,7 @@
             data-source="{{ addresses }}"
             value="{{ address }}"
          ><button class="btn btn-primary">
-            {% icon 'fugue-flashlight' %} Discover
+            {% icon 'fugue-flashlight' %} {% trans "Discover" %}
         </button>
     </div>
 </div>

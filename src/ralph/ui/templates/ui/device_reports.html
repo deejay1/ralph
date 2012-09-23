@@ -3,6 +3,7 @@
 {% load formats %}
 {% load bob %}
 {% load icons %}
+{% load i18n %}
 
 {% block content %}
   <div class="row-fluid">
@@ -10,29 +11,29 @@
             <table class="table table-striped table-bordered details-report">
                 <tbody>
                     <tr>
-                        <th>Name</th>
+                        <th>{% trans "Name" %}</th>
                         <td>{{ device.name }}</td>
                     </tr>
                     {% if device.name2 %}
                     <tr>
-                        <th>Extra name</th>
+                        <th>{% trans "Extra name" %}</th>
                         <td>{{ device.name2 }}</td>
                     </tr>
                     {% endif %}
                     <tr>
-                        <th>Model</th>
+                        <th>{% trans "Model" %}</th>
                         <td>{{ device.model.name }}</td>
                     </tr>
                     <tr>
-                        <th>Serial number</th>
+                        <th>{% trans "Serial number" %}</th>
                         <td>{{ device.sn }}</td>
                     </tr>
                     <tr>
-                        <th>Barcode</th>
+                        <th>{% trans "Barcode" %}</th>
                         <td>{{ device.barcode }}</td>
                     </tr>
                     <tr>
-                        <th>Verified</th>
+                        <th>{% trans "Verified" %}</th>
                         <td>{{ device.verified }}</td>
                     </tr>
 
@@ -42,11 +43,11 @@
             <table class="table table-striped table-bordered details-report">
                 <tbody>
                 <tr>
-                    <th>Support expiration</th>
+                    <th>{% trans "Support expiration" %}</th>
                     <td>{{ device.support_expiration_date|date:'Y-m-d H:i' }}</td>
                 </tr>
                 <tr>
-                    <th>Warranty expiration</th>
+                    <th>{% trans "Warranty expiration" %}</th>
                     <td>{{ device.warranty_expiration_date|date:'Y-m-d H:i' }}</td>
                 </tr>
                 </tbody>
@@ -55,36 +56,36 @@
             <table class="table table-striped table-bordered details-report">
                 <tbody>
                 <tr>
-                    <th>Venture</th>
+                    <th>{% trans "Venture" %}</th>
                     <td>{{ device.venture.name }}</td>
                 </tr>
                 <tr>
-                    <th>Role</th>
+                    <th>{% trans "Role" %}</th>
                     <td>{{ device.role }}</td>
                 </tr>
                 <tr>
-                    <th>Parent</th>
+                    <th>{% trans "Parent" %}</th>
                     <td>{{ device.parent }}</td>
                 </tr>
                 <tr>
-                    <th>Chassis position</th>
+                    <th>{% trans "Chassis position" %}</th>
                     <td>{{ device.chassis_position }}</td>
                 </tr>
                 <tr>
-                    <th>Position</th>
+                    <th>{% trans "Position" %}</th>
                     <td>{{ device.position }}</td>
                 </tr>
 
                 {% if device.model.type == dt.blade_server.id %}
                     <tr>
-                        <th>Blade System</th>
+                        <th>{% trans "Blade System" %}</th>
                         <td><a href="{{ device.parent.id }}"
                                 >{{ device.parent|device_icon }}
                             {{ device.parent.name }}</a></td>
                     </tr>
                     {%  if device.parent.management %}
                         <tr>
-                            <th>Blade System Management Address</th>
+                            <th>{% trans "Blade System Management Address" %}</th>
                             <td><a href="https://{{ device.parent.management.address }}"
                                     >{{ device.parent.management|address_icon }}
                                 {{ device.parent.management }}</a></td>
@@ -94,14 +95,14 @@
 
                 {% if device.model.type == dt.virtual_server.id %}
                     <tr>
-                        <th>Virtual Server Hypervisor</th>
+                        <th>{% trans "Virtual Server Hypervisor" %}</th>
                         <td><a href="{{ device.parent.id }}"
                                 >{{ device.parent|device_icon }}
                             {{ device.parent.name }}</a></td>
                     </tr>
                     {%  if device.management %}
                         <tr>
-                            <th>Head Node Management Address</th>
+                            <th>{% trans "Head Node Management Address" %}</th>
                             <td><a href="https://{{ device.management.address }}"
                                     >{{ device.management|address_icon }}
                                 {{ device.management }}</a></td>
@@ -110,7 +111,7 @@
                 {% else %}
                     {%  if device.find_management %}
                         <tr>
-                            <th>Server Management Address</th>
+                            <th>{% trans "Server Management Address" %}</th>
                             <td><a href="https://{{ device.find_management.address }}"
                                     >{{ device.find_management|address_icon }}
                                 {{ device.find_management }}</a></td>
@@ -123,9 +124,9 @@
             <table class="table table-striped table-bordered details-addresses">
                 <thead><tr>
                     <th width="16"></th>
-                    <th>Hostname</th>
-                    <th>Address</th>
-                    <th>Last Ping</th>
+                    <th>{% trans "Hostname" %}</th>
+                    <th>{% trans "Address" %}</th>
+                    <th>{% trans "Last Ping" %}</th>
                 </tr></thead>
                 <tbody>
                 {% for item in device.ipaddress_set.all %}
@@ -143,23 +144,23 @@
             <table class="table table-striped table-bordered details-report">
                 <tbody>
                     <tr>
-                        <th>Price</th>
+                        <th>{% trans "Price" %}</th>
                         <td>{{ device.cached_price|currency }}</td>
                     </tr>
                     <tr>
-                        <th>Cost</th>
+                        <th>{% trans "Cost" %}</th>
                         <td>{{ device.cached_cost|currency }}</td>
                     </tr>
                     <tr>
-                        <th>Purchase date</th>
+                        <th>{% trans "Purchase date" %}</th>
                         <td>{{ device.purchase_date|date:'Y-m-d H:i' }}</td>
                     </tr>
                     <tr>
-                        <th>Deprecation date</th>
+                        <th>{% trans "Deprecation date" %}</th>
                         <td>{{ device.deprecation_date|date:'Y-m-d H:i' }}</td>
                     </tr>
                     <tr>
-                        <th>Deprecation month</th>
+                        <th>{% trans "Deprecation month" %}</th>
                         <td>{{ device.deprecation_kind.name }}</td>
                     </tr>
 
@@ -169,7 +170,7 @@
             <table class="table table-striped table-bordered details-info-owners">
                 <thead><tr>
                     <th width="16"></th>
-                    <th>Owner</th>
+                    <th>{% trans "Owner" %}</th>
                 </tr></thead>
                 <tbody>
                 {% for o in device.venture.ventureowner_set.all %}

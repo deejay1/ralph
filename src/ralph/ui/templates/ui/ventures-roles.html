@@ -3,12 +3,14 @@
 {% load url from future %}
 {% load icons %}
 
+{% load i18n %}
+
 {% block contentarea %}
 <div class="span7">
 <table class="table table-striped table-bordered table-list device-list">
     <thead><tr>
-        <th>Role</th>
-        <th>Count</th>
+        <th>{% trans "Role" %}</th>
+        <th>{% trans "Count" %}</th>
     </tr></thead>
     <tbody>
         {% for r in items %}
@@ -37,8 +39,8 @@
 <table class="table table-striped table-bordered details-role-properties">
     <thead><tr>
         <th width="16"></th>
-        <th>Property</th>
-        <th>Type</th>
+        <th>{% trans "Property" %}</th>
+        <th>{% trans "Type" %}</th>
     </tr></thead>
     <tbody>
         {% for p in role.roleproperty_set.all %}
@@ -51,7 +53,7 @@
     </tbody>
 </table>
 {%  if editable %}
- <p>Create a new property for this role.</p>
+ <p>{% trans "Create a new property for this role." %}</p>
  {% include 'ui/base-form.html' %}
 {%  endif %}
 {% endif %}

@@ -1,6 +1,7 @@
 {% load url from future %}
 {% load icons %}
 {% load query %}
+{% load i18n %}
 
 <div class="pagination pagination-centered">
 {% if page.has_other_pages %}
@@ -29,6 +30,6 @@
 </ul>
 {% endif %}
 <ul>
-    <li><a href="?{{ url_query|query_page:0 }}" rel="tooltip" title="Show all items on a single page">{% icon 'fugue-blue-documents-stack' %} {{ page.paginator.count }} items</a></li>
-    <li><a href="?{{ url_query|query_export:'csv' }}" rel="tooltip" title="Export as CSV">{% icon 'fugue-blue-document-excel-csv' %} CSV</a></li>
+    <li><a href="?{{ url_query|query_page:0 }}" rel="tooltip" title="{% trans "Show all items on a single page" %}">{% icon 'fugue-blue-documents-stack' %} {% blocktrans count counter=page.paginator.count %}1 item{% plural %}{{counter}} items {% endblocktrans %}</a></li>
+    <li><a href="?{{ url_query|query_export:'csv' }}" rel="tooltip" title="{% trans "Export as CSV" %}">{% icon 'fugue-blue-document-excel-csv' %} CSV</a></li>
 </ul></div>

@@ -2,6 +2,8 @@
 {% load icons %}
 {% load formats %}
 
+{% load i18n %}
+
 {% block form %}
 <form class="form form-horizontal" method="POST">
     {% csrf_token %}
@@ -19,7 +21,7 @@
                         {% if f.name in form.manual_fields %}
                         <a href="#" class="fugue-icon fugue-hand"
                             data-clear-field="{{ f.name }}" data-device-id="{{ device.id }}"
-                            rel="tooltip" title="Unlock automated updates"></a>
+                            rel="tooltip" title="{% trans "Unlock automated updates" %}"></a>
                         {% endif %}
                     </label>
                     <div class="form-field controls">
@@ -43,10 +45,10 @@
     {% endblock %}
 {% if editable %}
     {% block formbuttons %}
-        <button class="btn btn-primary" type="submit" name="save">{% icon 'fugue-tick' %}&nbsp;Save</button>
-        <button class="btn" type="reset">{% icon 'fugue-cross' %}&nbsp;Cancel</button>
+        <button class="btn btn-primary" type="submit" name="save">{% icon 'fugue-tick' %}&nbsp;{% trans "Save" %}</button>
+        <button class="btn" type="reset">{% icon 'fugue-cross' %}&nbsp;{% trans "Cancel" %}</button>
         {% if form.has_delete %}
-            <button class="btn btn-danger pull-right" type="submit" name="delete">{% icon 'fugue-skull' %}&nbsp;Delete</button>
+            <button class="btn btn-danger pull-right" type="submit" name="delete">{% icon 'fugue-skull' %}&nbsp;{% trans "Delete" %}</button>
         {% endif %}
     {% endblock %}
 {% endif %}

@@ -2,6 +2,7 @@
 
 {% load url from future %}
 {% load icons %}
+{% load i18n %}
 
 {% block contentarea %}
 <form class="form form-horizontal device-create-form" method="POST">
@@ -30,7 +31,7 @@
 <div class="form-actions">
     <div class="control-group" style="white-space:nowrap">
         <button class="btn btn-primary" type="submit" name="save">
-                {% icon 'fugue-tick' %}&nbsp;Save
+                {% icon 'fugue-tick' %}&nbsp;{% trans "Save" %}
         </button>
     </div>
 </div>
