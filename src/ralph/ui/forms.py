@@ -10,6 +10,7 @@ from calendar import monthrange
 from django import forms
 from lck.django.common.models import MACAddressField
 from bob.forms import AutocompleteWidget
+from django.utils.translation import ugettext_lazy as _
 
 from ralph.business.models import Venture, RoleProperty, VentureRole
 from ralph.deployment.models import Deployment
@@ -46,8 +47,8 @@ def _all_roles():
 
 
 class DateRangeForm(forms.Form):
-    start = forms.DateField(widget=DateWidget, label='Start date')
-    end = forms.DateField(widget=DateWidget, label='End date')
+    start = forms.DateField(widget=DateWidget, label=_('Start date'))
+    end = forms.DateField(widget=DateWidget, label=_('End date'))
 
 
 class MarginsReportForm(DateRangeForm):
@@ -78,13 +79,13 @@ class MarginsReportForm(DateRangeForm):
 
 class VentureFilterForm(forms.Form):
     show_all = forms.BooleanField(required=False,
-            label="Show all ventures")
+            label=_("Show all ventures"))
 
 
 class NetworksFilterForm(forms.Form):
     show_ip = forms.BooleanField(required=False,
-            label="Show as addresses")
-    contains = forms.CharField(required=False, label="Contains",
+            label=_("Show as addresses"))
+    contains = forms.CharField(required=False, label=_("Contains"),
             widget=forms.TextInput(attrs={'class':'span2'}))
 
 
@@ -93,25 +94,25 @@ class SearchForm(forms.Form):
             widget=forms.TextInput(attrs={'class':'span2'}))
     address = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}),
-            label="Address or network")
+            label=_("Address or network"))
     remarks = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}))
     role = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}),
-            label="Venture or role")
+            label=_("Venture or role"))
     model = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}))
     component = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}),
-            label="Component or software")
+            label=_("Component or software"))
     serial = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}),
-            label="Serial number or MAC")
+            label=_("Serial number or MAC"))
     barcode = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}))
     position = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}),
-            label="Datacenter, rack or position")
+            label=_("Datacenter, rack or position"))
     history = forms.CharField(required=False,
             widget=forms.TextInput(attrs={'class':'span2'}))
     device_type = forms.MultipleChoiceField(required=False,
@@ -123,7 +124,7 @@ class SearchForm(forms.Form):
     component_group = forms.IntegerField(required=False,
             widget=ComponentGroupWidget, label="")
     deleted = forms.BooleanField(required=False,
-            label="Include deleted")
+            label=_("Include deleted"))
 
 
 class PropertyForm(forms.Form):
@@ -219,25 +220,25 @@ class DeploymentForm(forms.ModelForm):
     def clean_hostname(self):
         hostname = self.cleaned_data['hostname'].strip().lower()
         if not is_valid_hostname(hostname):
-            raise forms.ValidationError("Invalid hostname.")
+            raise forms.ValidationError(_("Invalid hostname."))
         if '.' not in hostname:
-            raise forms.ValidationError("Hostname has to include the domain.")
+            raise forms.ValidationError(_("Hostname has to include the domain."))
         return hostname
 
     def clean_ip(self):
         ip = self.cleaned_data.get('ip')
         venture_role = self.cleaned_data.get('venture_role')
         if venture_role.check_ip(ip) is False:
-            raise forms.ValidationError("Given IP isn't in the appropriate subnet")
+            raise forms.ValidationError(_("Given IP isn't in the appropriate subnet"))
         return ip
 
     def clean_device(self):
         device = self.cleaned_data['device']
         managements = self.device_management_count(device)
         if managements < 1:
-            raise forms.ValidationError("doesn't have a management address")
+            raise forms.ValidationError(_("doesn't have a management address"))
         if managements > 1:
-            raise forms.ValidationError("has more than one management address")
+            raise forms.ValidationError(_("has more than one management address"))
         return device
 
     def device_management_count(self, device):
@@ -265,9 +266,9 @@ class DeviceForm(forms.ModelForm):
 
     save_comment = forms.CharField(required=True,
             widget=forms.TextInput(attrs={'class':'span4'}),
-            help_text="Describe your change",
+            help_text=_("Describe your change"),
             error_messages={
-                'required': "You must describe your change",
+                'required': _("You must describe your change"),
             },
         )
 
@@ -335,7 +336,7 @@ class DeviceForm(forms.ModelForm):
         verified = self.cleaned_data['verified']
         if verified and not (self.cleaned_data['venture'] and
                              self.cleaned_data['venture_role']):
-            raise forms.ValidationError("Can't verify an empty role!")
+            raise forms.ValidationError(_("Can't verify an empty role!"))
         return verified
 
     def clean_barcode(self):
@@ -352,7 +353,7 @@ class DeviceForm(forms.ModelForm):
         if role and venture and role.venture == venture:
             return role
         if role is not None:
-            raise forms.ValidationError("Role from a different venture.")
+            raise forms.ValidationError(_("Role from a different venture."))
         return None
 
 
@@ -408,7 +409,7 @@ class DeviceCreateForm(DeviceForm):
                 raise forms.ValidationError(e)
         if not (macs or sn):
             raise forms.ValidationError(
-                    "Either MACs or serial number required.")
+                    _("Either MACs or serial number required."))
         return ' '.join(macs)
 
     def clean_model(self):
@@ -534,5 +535,5 @@ class DevicePurchaseForm(DeviceForm):
             self.data = self.data.copy()
             self.data['model_name'] = self.initial['model_name']
 
-    model_name = forms.CharField(label="Model", widget=ReadOnlyWidget,
+    model_name = forms.CharField(label=_("Model"), widget=ReadOnlyWidget,
                                  required=False)

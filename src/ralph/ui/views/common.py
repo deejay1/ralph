@@ -14,6 +14,7 @@ from django.db import models as db
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.utils import simplejson as json
 from django.views.generic import UpdateView, DetailView, TemplateView
+from django.utils.translation import ugettext_lazy as _
 
 from lck.django.common import nested_commit_on_success
 from lck.django.tags.models import Language, TagStem
@@ -96,44 +97,44 @@ class BaseMixin(object):
         profile = self.request.user.get_profile()
         has_perm = profile.has_perm
         mainmenu_items = [
-            MenuItem('Ventures', fugue_icon='fugue-store',
+            MenuItem(_('Ventures'), fugue_icon='fugue-store',
                      view_name='ventures')
         ]
         if has_perm(Perm.read_dc_structure):
             mainmenu_items.append(
-                MenuItem('Racks', fugue_icon='fugue-building',
+                MenuItem(_('Racks'), fugue_icon='fugue-building',
                          view_name='racks'))
         if has_perm(Perm.read_network_structure):
             mainmenu_items.append(
-                MenuItem('Networks', fugue_icon='fugue-weather-clouds',
+                MenuItem(_('Networks'), fugue_icon='fugue-weather-clouds',
                          view_name='networks'))
         if has_perm(Perm.read_device_info_reports):
             mainmenu_items.append(
-                MenuItem('Reports', fugue_icon='fugue-report',
+                MenuItem(_('Reports'), fugue_icon='fugue-report',
                          view_name='reports'))
         if has_perm(Perm.edit_device_info_financial):
             mainmenu_items.append(
-                MenuItem('Catalog', fugue_icon='fugue-paper-bag',
+                MenuItem(_('Catalog'), fugue_icon='fugue-paper-bag',
                          view_name='catalog'))
         if ('ralph.cmdb' in settings.INSTALLED_APPS and
                 has_perm(Perm.read_configuration_item_info_generic)):
             mainmenu_items.append(
-                MenuItem('CMDB', fugue_icon='fugue-thermometer',
+                MenuItem(_('CMDB'), fugue_icon='fugue-thermometer',
                          href='/cmdb/changes/timeline')
             )
         if self.request.user.is_staff:
             mainmenu_items.append(
-                MenuItem('Admin', fugue_icon='fugue-toolbox', href='/admin'))
+                MenuItem(_('Admin'), fugue_icon='fugue-toolbox', href='/admin'))
         if settings.BUGTRACKER_URL:
             mainmenu_items.append(
-                MenuItem('Bugs', fugue_icon='fugue-bug',
+                MenuItem(_('Bugs'), fugue_icon='fugue-bug',
                          href=settings.BUGTRACKER_URL))
         mainmenu_items.append(
-            MenuItem('%s (logout)' % self.request.user, fugue_icon='fugue-user',
+            MenuItem(_('%s (logout)') % self.request.user, fugue_icon='fugue-user',
                      view_name='logout', view_args=[details or 'info', ''],
                      pull_right=True))
         mainmenu_items.append(
-            MenuItem('Advanced search', name='search',
+            MenuItem(_('Advanced search'), name='search',
                      fugue_icon='fugue-magnifier', view_args=[details or 'info', ''],
                      view_name='search', pull_right=True))
         tab_items = []
@@ -150,52 +151,52 @@ class BaseMixin(object):
                 )
         if has_perm(Perm.read_device_info_generic, venture):
             tab_items.extend([
-                MenuItem('Info', fugue_icon='fugue-wooden-box',
+                MenuItem(_('Info'), fugue_icon='fugue-wooden-box',
                          href=tab_href('info')),
-                MenuItem('Components', fugue_icon='fugue-box',
+                MenuItem(_('Components'), fugue_icon='fugue-box',
                         href=tab_href('components')),
-                MenuItem('Addresses', fugue_icon='fugue-network-ip',
+                MenuItem(_('Addresses'), fugue_icon='fugue-network-ip',
                         href=tab_href('addresses')),
             ])
         if has_perm(Perm.edit_device_info_financial, venture):
             tab_items.extend([
-                MenuItem('Prices', fugue_icon='fugue-money-coin',
+                MenuItem(_('Prices'), fugue_icon='fugue-money-coin',
                         href=tab_href('prices')),
             ])
         if has_perm(Perm.read_device_info_financial, venture):
             tab_items.extend([
-                MenuItem('Costs', fugue_icon='fugue-wallet',
+                MenuItem(_('Costs'), fugue_icon='fugue-wallet',
                         href=tab_href('costs')),
             ])
         if has_perm(Perm.read_device_info_history, venture):
             tab_items.extend([
-                MenuItem('History', fugue_icon='fugue-hourglass',
+                MenuItem(_('History'), fugue_icon='fugue-hourglass',
                          href=tab_href('history')),
             ])
         if has_perm(Perm.read_device_info_support, venture):
             tab_items.extend([
-                MenuItem('Purchase', fugue_icon='fugue-baggage-cart-box',
+                MenuItem(_('Purchase'), fugue_icon='fugue-baggage-cart-box',
                          href=tab_href('purchase')),
             ])
         if has_perm(Perm.run_discovery, venture):
             tab_items.extend([
-                MenuItem('Discover', fugue_icon='fugue-flashlight',
+                MenuItem(_('Discover'), fugue_icon='fugue-flashlight',
                          href=tab_href('discover')),
             ])
         if ('ralph.cmdb' in settings.INSTALLED_APPS and
             has_perm(Perm.read_configuration_item_info_generic)):
             tab_items.extend([
-                MenuItem('CMDB', fugue_icon='fugue-thermometer',
+                MenuItem(_('CMDB'), fugue_icon='fugue-thermometer',
                          href=tab_href('cmdb')),
             ])
         if has_perm(Perm.read_device_info_reports, venture):
             tab_items.extend([
-                MenuItem('Reports', fugue_icon='fugue-reports-stack',
+                MenuItem(_('Reports'), fugue_icon='fugue-reports-stack',
                          href=tab_href('reports')),
             ])
         if details == 'bulkedit':
             tab_items.extend([
-                MenuItem('Bulk edit', fugue_icon='fugue-pencil-field',
+                MenuItem(_('Bulk edit'), fugue_icon='fugue-pencil-field',
                          name='bulkedit'),
             ])
         ret.update({
@@ -264,21 +265,21 @@ class DeviceUpdateView(UpdateView):
         model.save_comment = form.cleaned_data.get('save_comment')
         model.save(priority=SAVE_PRIORITY, user=self.request.user)
         pricing.device_update_cached(model)
-        messages.success(self.request, "Changes saved.")
+        messages.success(self.request, _("Changes saved."))
         return HttpResponseRedirect(self.request.path)
 
     def get(self, *args, **kwargs):
         self.object = self.get_object()
         has_perm = self.request.user.get_profile().has_perm
         if not has_perm(self.read_perm, self.object.venture):
-            return HttpResponseForbidden("You don't have permission to see this.")
+            return HttpResponseForbidden(_("You don't have permission to see this."))
         return super(DeviceUpdateView, self).get(*args, **kwargs)
 
     def post(self, *args, **kwargs):
         self.object = self.get_object()
         has_perm = self.request.user.get_profile().has_perm
         if not has_perm(self.edit_perm, self.object.venture):
-            return HttpResponseForbidden("You don't have permission to edit this.")
+            return HttpResponseForbidden(_("You don't have permission to edit this."))
         return super(DeviceUpdateView, self).post(*args, **kwargs)
 
 
@@ -301,7 +302,7 @@ class DeviceDetailView(DetailView):
         self.object = self.get_object()
         has_perm = self.request.user.get_profile().has_perm
         if not has_perm(self.read_perm, self.object.venture):
-            return HttpResponseForbidden("You don't have permission to see this.")
+            return HttpResponseForbidden(_("You don't have permission to see this."))
         return super(DeviceDetailView, self).get(*args, **kwargs)
 
 
@@ -368,20 +369,20 @@ class Info(DeviceUpdateView):
         self.object = self.get_object()
         has_perm = self.request.user.get_profile().has_perm
         if not has_perm(Perm.edit_device_info_generic, self.object.venture):
-            return HttpResponseForbidden("You don't have permission to edit this.")
+            return HttpResponseForbidden(_("You don't have permission to edit this."))
         self.property_form = self.get_property_form()
         if 'propertiessave' in self.request.POST:
             properties = list(self.object.venture_role.roleproperty_set.all())
             self.property_form = PropertyForm(properties, self.request.POST)
             if self.property_form.is_valid():
-                messages.success(self.request, "Properties updated.")
+                messages.success(self.request, _("Properties updated."))
                 self.save_properties(self.object, self.property_form.cleaned_data)
                 return HttpResponseRedirect(self.request.path)
         elif 'save-tags' in self.request.POST:
             tags = self.request.POST.get('tags', '')
             self.object.untag_all()
             self.object.tag(tags, Language.en, self.request.user)
-            messages.success(self.request, "Tags updated.")
+            messages.success(self.request, _("Tags updated."))
             return HttpResponseRedirect(self.request.path)
         else:
             return super(Info, self).post(*args, **kwargs)
@@ -588,7 +589,7 @@ class BulkEdit(BaseMixin, TemplateView):
     def post(self, *args, **kwargs):
         profile = self.request.user.get_profile()
         if not profile.has_perm(Perm.bulk_edit):
-            messages.error(self.request, "You don't have permissions for bulk edit.")
+            messages.error(self.request, _("Yu don't have permissions for bulk edit."))
             return super(BulkEdit, self).get(*args, **kwargs)
         selected = self.request.POST.getlist('select')
         self.devices = Device.objects.filter(id__in=selected)
@@ -610,7 +611,7 @@ class BulkEdit(BaseMixin, TemplateView):
                         self.form.cleaned_data, self.request.user)
                 return HttpResponseRedirect(self.request.path+'../info/')
             else:
-                messages.error(self.request, 'Correct the errors.')
+                messages.error(self.request, _('Correct the errors.'))
         elif 'bulk' in self.request.POST:
             self.form = self.Form(initial=initial)
         return super(BulkEdit, self).get(*args, **kwargs)
