@@ -39,3 +39,10 @@ def delim_cisco(value):
 def delim_colon(value):
     m = delim_none(value)
     return ':'.join('%s%s' % c for c in zip(*[m[i::2] for i in range(2)]))
+
+
+@register.filter
+@stringfilter
+def delim_dash(value):
+    m = delim_none(value)
+    return '-'.join('%s%s' % c for c in zip(*[m[i::2] for i in range(2)]))
