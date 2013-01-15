@@ -1,0 +1,4 @@
+#!ipxe
+echo Something went wrong, probably Preboot configuration is broken
+sleep 10
+sanboot --drive 0x80

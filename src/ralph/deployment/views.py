@@ -75,15 +75,16 @@ def get_response(pbf, deployment):
 
 
 def preboot_raw_view(request, file_name):
+    ipxe_config = 'deployment/localboot.txt'
     try:
         deployment = get_current_deployment(request)
         pbf = deployment.preboot.files.get(name=file_name)
         return get_response(pbf, deployment)
     except (AttributeError, Deployment.DoesNotExist, PrebootFile.DoesNotExist,
         PrebootFile.MultipleObjectsReturned):
-        pass
+        ipxe_config = 'deployment/errorboot.txt'
     if file_name in ('boot', 'boot_ipxe', 'boot.ipxe'):
-        return render(request, 'deployment/localboot.txt', locals(),
+        return render(request, ipxe_config, locals(),
             mimetype='text/plain')
     return HttpResponseNotFound()
 
